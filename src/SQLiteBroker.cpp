@@ -65,7 +65,8 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
     }
 
     // Execute SQL statement
-    rc = sqlite3_exec(db, request.str().c_str(), this->Callback, (void *) data, &zErrMsg);
+    const std::string tmp = request.str();
+    rc = sqlite3_exec(db, tmp.c_str(), this->Callback, (void *) data, &zErrMsg);
 
     // Analyze the results and output the conclusion
     if (rc != SQLITE_OK) {
