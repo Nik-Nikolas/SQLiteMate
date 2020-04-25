@@ -16,7 +16,6 @@ int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_ar
 
     utils::ConsoleLogger::Log("message", (const char *) _data);
 
-    // Execute SQL statement
     m_response.open("response.txt", std::ios::app);
     if(!m_response){
         utils::ConsoleLogger::Log("error", "Output file not ready.");
@@ -42,13 +41,11 @@ int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_ar
 
 int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath) {
 
+    // Open database
     sqlite3 *db;
     char *zErrMsg{};
     const char *data = "Callback function called";
-
-    // Open database
     int rc = sqlite3_open(m_dbPath.c_str(), &db);
-
     if (rc) {
         utils::ConsoleLogger::Log("error", "Can't open database: " + std::string(sqlite3_errmsg(db)));
         return 1;
@@ -67,8 +64,10 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
         request << s.rdbuf();
     }
 
+    // Execute SQL statement
     rc = sqlite3_exec(db, request.str().c_str(), this->Callback, (void *) data, &zErrMsg);
 
+    // Analyze the results and output the conclusion
     if (rc != SQLITE_OK) {
         utils::ConsoleLogger::Log("error", "SQL error: " + std::string(zErrMsg));
         sqlite3_free(zErrMsg);
