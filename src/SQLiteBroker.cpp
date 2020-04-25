@@ -43,11 +43,9 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
 
     // Open database
     sqlite3 *db;
-    char *zErrMsg{};
-    const char *data = "Callback function called";
-    int rc = sqlite3_open(m_dbPath.c_str(), &db);
-    if (rc) {
-        utils::ConsoleLogger::Log("error", "Can't open database: " + std::string(sqlite3_errmsg(db)));
+    int res = sqlite3_open(m_dbPath.c_str(), &db);
+    if (res) {
+        utils::ConsoleLogger::Log("error", "Can't open the database: " + std::string(sqlite3_errmsg(db)));
         return 1;
     } else {
         utils::ConsoleLogger::Log("message", "Opened database successfully.");
@@ -56,22 +54,24 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
     // Read the request from file
     std::stringstream request;
     {
-        std::ifstream s(_requestPath);
-        if (!s) {
+        std::ifstream stream(_requestPath);
+        if (!stream) {
             utils::ConsoleLogger::Log("error", "Request file not available.");
             return 1;
         }
-        request << s.rdbuf();
+        request << stream.rdbuf();
     }
 
     // Execute SQL statement
     const std::string tmp = request.str();
-    rc = sqlite3_exec(db, tmp.c_str(), this->Callback, (void *) data, &zErrMsg);
+    char *errMsg{};
+    const char *data = "Callback function called";
+    res = sqlite3_exec(db, tmp.c_str(), this->Callback, (void *)data, &errMsg);
 
     // Analyze the results and output the conclusion
-    if (rc != SQLITE_OK) {
-        utils::ConsoleLogger::Log("error", "SQL error: " + std::string(zErrMsg));
-        sqlite3_free(zErrMsg);
+    if (res != SQLITE_OK) {
+        utils::ConsoleLogger::Log("error", "SQL error: " + std::string(errMsg));
+        sqlite3_free(errMsg);
         return 1;
     } else {
         utils::ConsoleLogger::Log("message", "Operation done successfully.");
