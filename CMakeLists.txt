@@ -11,6 +11,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # exe
 add_executable(${PROJECT_NAME}
         src/main.cpp
+        src/SQLiteBroker.cpp
+        src/sqlite3/sqlite3.c
         )
 target_include_directories(${PROJECT_NAME}
         PUBLIC
@@ -18,6 +20,23 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
         PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+# threads for sqlite:
+# pthread_mutexattr_init
+# pthread_mutexattr_settype
+# pthread_mutexattr_destroy
+# pthreadMutexTry pthread_
+# mutex_trylock
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+target_link_libraries(${PROJECT_NAME} Threads::Threads)
+
+# for sqlite functions:
+# unixDlOpen
+# unixDlError
+# unixDlSym
+# unixDlClose
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
 # install
 include(GNUInstallDirs)
