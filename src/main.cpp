@@ -2,12 +2,32 @@
 // Created by red on 4/25/20.
 //
 
-#include "sqlite3/sqlite3.h"
+#include "SQLiteBroker.h"
+#include "utils/ConsoleLogger.h"
+
+#include <string>
 #include <iostream>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
+    std::string dbPath{};
+    std::string requestPath{};
 
-    std::cout << "Request complete." << std::endl;
-    return 0;
+    if (argc == 1) {
+        dbPath = "My.db";
+        requestPath = "request.txt";
+    }
+
+    if (argc == 3) {
+        dbPath = argv[1];
+        requestPath = argv[2];
+    }
+
+    if (argc != 1 && argc != 3) {
+        utils::ConsoleLogger::Log("error", "Wrong parameters amount!");
+        return 1;
+    }
+
+    sqlite::utilities::SQLiteBroker broker(dbPath);
+
+    return broker.MakeRequest(requestPath);
 }
