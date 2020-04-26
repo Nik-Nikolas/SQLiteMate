@@ -7,7 +7,6 @@
 #include "utils/ConsoleLogger.h"
 
 #include <string>
-#include <iostream>
 
 int main(int argc, char **argv) {
     std::string dbPath{};
