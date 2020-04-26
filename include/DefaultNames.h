@@ -40,9 +40,9 @@ namespace sqlite::utilities {
 
     private:
         static inline std::map<DefaultNames, std::string> m_map{{DefaultNames::notDefined, "notDefined"},
-                                                                {DefaultNames::requestFile, "requestFile"},
-                                                                {DefaultNames::responseFile, "responseFile"},
-                                                                {DefaultNames::dbFile, "dbFile"}};
+                                                                {DefaultNames::requestFile, "request.txt"},
+                                                                {DefaultNames::responseFile, "response.txt"},
+                                                                {DefaultNames::dbFile, "My.db"}};
     };
 }
 

@@ -2,6 +2,8 @@
 // Created by red on 4/25/20.
 //
 
+#include "DefaultNames.h"
+
 #include "utils/ConsoleLogger.h"
 #include "SQLiteBroker.h"
 #include "sqlite3/sqlite3.h"
@@ -13,27 +15,37 @@ sqlite::utilities::SQLiteBroker::SQLiteBroker(const std::string &_dbPath) : m_db
 
 int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_argv, char **_azColName) {
 
-    utils::ConsoleLogger::Log("message", (const char *) _data);
+    // Default response file opening
+    {
+        utils::ConsoleLogger::Log("message", (const char *) _data);
 
-    m_response.open("response.txt", std::ios::app);
-    if(!m_response){
-        utils::ConsoleLogger::Log("error", "Output file not ready.");
-        return 1;
-    }
+        std::string responseFile{};
+        auto resOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::responseFile);
+        if(resOpt)
+            responseFile = resOpt.value();
 
-    m_response << "\n-----------------------------------\n";
-    utils::ConsoleLogger::Log("message", "\n-----------------------------------\n");
-    for (auto i = 0; i < _argc; ++i) {
-        const std::string val = _argv[i] ? _argv[i] : "";
-
-        if(!val.empty()) {
-            m_response << _azColName[i] << " : " << val << "\n";
-            utils::ConsoleLogger::Log("message", std::string(_azColName[i]) + " : " + val);
+        m_response.open(responseFile, std::ios::app);
+        if(!m_response){
+            utils::ConsoleLogger::Log("error", "Output file not ready.");
+            return 1;
         }
     }
-    m_response << std::endl;
 
-    m_response.close();
+    // Output the data to the file
+    {
+        m_response << "\n-----------------------------------\n";
+        utils::ConsoleLogger::Log("message", "\n-----------------------------------\n");
+        for (auto i = 0; i < _argc; ++i) {
+            const std::string val = _argv[i] ? _argv[i] : "";
+
+            if(!val.empty()) {
+                m_response << _azColName[i] << " : " << val << "\n";
+                utils::ConsoleLogger::Log("message", std::string(_azColName[i]) + " : " + val);
+            }
+        }
+        m_response << std::endl;
+        m_response.close();
+    }
 
     return 0;
 }

@@ -2,6 +2,7 @@
 // Created by red on 4/25/20.
 //
 
+#include "DefaultNames.h"
 #include "SQLiteBroker.h"
 #include "utils/ConsoleLogger.h"
 
@@ -13,8 +14,14 @@ int main(int argc, char **argv) {
     std::string requestPath{};
 
     if (argc == 1) {
-        dbPath = "My.db";
-        requestPath = "request.txt";
+
+        auto dbOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::dbFile);
+        if(dbOpt)
+            dbPath = dbOpt.value();
+
+        auto reqOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::requestFile);
+        if(reqOpt)
+            requestPath = reqOpt.value();
     }
 
     if (argc == 3) {
