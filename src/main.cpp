@@ -14,7 +14,6 @@ int main(int argc, char **argv) {
     std::string requestPath{};
 
     if (argc == 1) {
-
         auto dbOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::dbFile);
         if(dbOpt)
             dbPath = dbOpt.value();

@@ -9,8 +9,23 @@
 #include "sqlite3/sqlite3.h"
 
 #include <sstream>
+#include <filesystem>
 
 sqlite::utilities::SQLiteBroker::SQLiteBroker(const std::string &_dbPath) : m_dbPath(_dbPath) {
+
+    // Remove the old output file to avoid appending data to the existent one
+    {
+        std::string responseFile{};
+        auto resOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::responseFile);
+        if(resOpt)
+            responseFile = resOpt.value();
+
+        std::error_code ec{};
+        auto res = std::filesystem::remove(responseFile, ec);
+
+        if(!res)
+            utils::ConsoleLogger::Log("error", "Output file was not clear.");
+    }
 }
 
 int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_argv, char **_azColName) {

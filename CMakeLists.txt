@@ -38,6 +38,9 @@ target_link_libraries(${PROJECT_NAME} Threads::Threads)
 # unixDlClose
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
+# for std::filesystem
+target_link_libraries(${PROJECT_NAME} stdc++fs)
+
 # install
 include(GNUInstallDirs)
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
