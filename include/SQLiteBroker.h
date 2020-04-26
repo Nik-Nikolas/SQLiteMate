@@ -44,7 +44,7 @@ namespace sqlite::utilities {
         /** Ofstream entity
          *
          */
-        static inline std::ofstream m_response;
+        static inline std::ofstream m_response{};
     };
 }
 
