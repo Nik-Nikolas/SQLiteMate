@@ -13,7 +13,7 @@ add_executable(${PROJECT_NAME}
         src/main.cpp
         src/SQLiteBroker.cpp
         src/sqlite3/sqlite3.c
-        include/DefaultNames.h)
+        include/utils/DefaultNames.h)
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<INSTALL_INTERFACE:include/>
