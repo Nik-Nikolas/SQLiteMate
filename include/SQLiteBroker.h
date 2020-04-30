@@ -41,6 +41,8 @@ namespace sqlite::utilities {
          */
         std::string m_dbPath;
 
+        // TODO improve the resource processing: open/close file once for session
+        // TODO avoid the static stream resource
         /** Ofstream entity
          *
          */
