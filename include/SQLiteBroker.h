@@ -18,6 +18,14 @@ namespace sqlite::utilities {
         SQLiteBroker() = delete;
         explicit SQLiteBroker(const std::string& _dbPath);
 
+        /** Makes the SQL request
+         *
+         * @param _requestPath the text file with the request path
+         * @return 0 if successful, 1 otherwise
+         */
+        [[nodiscard]] int MakeRequest(const std::string &_requestPath, const std::string &_request);
+
+    private:
         /** To be called while sqlite3::sqlite3_exec performs the operation(s) while the SELECT query is processing
          *
          * @param _data data provided in the 4th argument of sqlite3_exec()
@@ -28,14 +36,6 @@ namespace sqlite::utilities {
          */
         static int SelectCallback(void *_data, int _argc, char **_argv, char **_azColName);
 
-        /** Makes the SQL request
-         *
-         * @param _requestPath the text file with the request path
-         * @return 0 if successful, 1 otherwise
-         */
-        [[nodiscard]] int MakeRequest(const std::string &_requestPath, const std::string &_request);
-
-    private:
         /** Keeps the path to the DB
          *
          */
