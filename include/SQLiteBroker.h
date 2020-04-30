@@ -18,7 +18,7 @@ namespace sqlite::utilities {
         SQLiteBroker() = delete;
         explicit SQLiteBroker(const std::string& _dbPath);
 
-        /** To be called while sqlite3::sqlite3_exec performs the operation(s)
+        /** To be called while sqlite3::sqlite3_exec performs the operation(s) while the SELECT query is processing
          *
          * @param _data data provided in the 4th argument of sqlite3_exec()
          * @param _argc the number of columns in row
