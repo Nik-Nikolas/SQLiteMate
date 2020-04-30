@@ -53,8 +53,8 @@ int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_ar
 
     // Output the data to the file
     {
-        m_response << "\n-----------------------------------\n";
-        utils::ConsoleLogger::Log("message", "\n-----------------------------------\n");
+        m_response << "\n\n";
+        utils::ConsoleLogger::Log("message", "\n\n");
         for (auto i = 0; i < _argc; ++i) {
             const std::string val = _argv[i] ? _argv[i] : "";
 
