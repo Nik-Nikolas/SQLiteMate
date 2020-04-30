@@ -33,7 +33,7 @@ sqlite::utilities::SQLiteBroker::SQLiteBroker(const std::string &_dbPath) : m_db
     }
 }
 
-int sqlite::utilities::SQLiteBroker::SelectCallback(void *_data, int _argc, char **_argv, char **_azColName) {
+int sqlite::utilities::SQLiteBroker::SelectCallback(void *_data, int _argc, char **_argv, char **_colName) {
 
     // Default response file opening
     {
@@ -59,8 +59,8 @@ int sqlite::utilities::SQLiteBroker::SelectCallback(void *_data, int _argc, char
             const std::string val = _argv[i] ? _argv[i] : "";
 
             if(!val.empty()) {
-                m_response << _azColName[i] << " : " << val << "\n";
-                utils::ConsoleLogger::Log("message", std::string(_azColName[i]) + " : " + val);
+                m_response << _colName[i] << " : " << val << "\n";
+                utils::ConsoleLogger::Log("message", std::string(_colName[i]) + " : " + val);
             }
         }
         m_response << std::endl;

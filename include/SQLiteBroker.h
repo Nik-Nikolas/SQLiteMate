@@ -31,10 +31,10 @@ namespace sqlite::utilities {
          * @param _data data provided in the 4th argument of sqlite3_exec()
          * @param _argc the number of columns in row
          * @param _argv an array of strings representing fields in the row
-         * @param _azColName an array of strings representing column names
+         * @param _colName an array of strings representing column names
          * @return 0 if successful, 1 otherwise
          */
-        static int SelectCallback(void *_data, int _argc, char **_argv, char **_azColName);
+        static int SelectCallback(void *_data, int _argc, char **_argv, char **_colName);
 
         /** Keeps the path to the DB
          *
