@@ -99,7 +99,7 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
     {
         const auto tmp = request.str();
         char *errMsg{};
-        const auto data = "Callback function called";
+        const auto data = "Callback function called (SELECT ... query found).";
         auto res = sqlite3_exec(db, tmp.c_str(), this->Callback, (void *)data, &errMsg);
 
         // Analyze the results and output the conclusion
