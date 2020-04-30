@@ -21,10 +21,15 @@ sqlite::utilities::SQLiteBroker::SQLiteBroker(const std::string &_dbPath) : m_db
             responseFile = resOpt.value();
 
         std::error_code ec{};
-        auto res = std::filesystem::remove(responseFile, ec);
+        if(std::filesystem::exists(responseFile, ec)) {
 
-        if(!res)
-            utils::ConsoleLogger::Log("error", "Output file was not clear.");
+            if(ec)
+                utils::ConsoleLogger::Log("error", "System error: " + ec.message());
+
+            auto res = std::filesystem::remove(responseFile, ec);
+            if(!res)
+                utils::ConsoleLogger::Log("error", "Output file was not clear.");
+        }
     }
 }
 
