@@ -70,7 +70,7 @@ int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_ar
     return 0;
 }
 
-int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath) {
+int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath, const std::string &_request) {
 
     // Open database
     sqlite3 *db;
@@ -84,23 +84,25 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
         }
     }
 
-    // Read the request from file
-    std::stringstream request;
+    // Read the SQL query from file / cli args
+    std::string query{_request};
+    if(query.empty())
     {
+        std::stringstream request;
         std::ifstream stream(_requestPath);
         if (!stream) {
             utils::ConsoleLogger::Log("error", "Request file not available.");
             return 1;
         }
         request << stream.rdbuf();
+        query = request.str();
     }
 
     // Execute SQL statement
     {
-        const auto tmp = request.str();
         char *errMsg{};
         const auto data = "Callback function called (SELECT ... query found).";
-        auto res = sqlite3_exec(db, tmp.c_str(), this->Callback, (void *)data, &errMsg);
+        auto res = sqlite3_exec(db, query.c_str(), this->Callback, (void *)data, &errMsg);
 
         // Analyze the results and output the conclusion
         if (res != SQLITE_OK) {

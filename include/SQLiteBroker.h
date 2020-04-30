@@ -33,7 +33,7 @@ namespace sqlite::utilities {
          * @param _requestPath the text file with the request path
          * @return 0 if successful, 1 otherwise
          */
-        [[nodiscard]] int MakeRequest(const std::string &_requestPath);
+        [[nodiscard]] int MakeRequest(const std::string &_requestPath, const std::string &_request);
 
     private:
         /** Keeps the path to the DB

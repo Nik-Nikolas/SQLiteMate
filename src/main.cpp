@@ -7,10 +7,12 @@
 #include "utils/ConsoleLogger.h"
 
 #include <string>
+#include <iostream>
 
 int main(int argc, char **argv) {
     std::string dbPath{};
     std::string requestPath{};
+    std::string request{};
 
     if (argc == 1) {
         auto dbOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::dbFile);
@@ -24,15 +26,15 @@ int main(int argc, char **argv) {
 
     if (argc == 3) {
         dbPath = argv[1];
-        requestPath = argv[2];
+        request = argv[2];
     }
 
     if (argc != 1 && argc != 3) {
-        utils::ConsoleLogger::Log("error", "Wrong parameters amount!");
+        utils::ConsoleLogger::Log("error", R"(Usage (CLI params): DB_name "SQL query")");
         return 1;
     }
 
     sqlite::utilities::SQLiteBroker broker(dbPath);
 
-    return broker.MakeRequest(requestPath);
+    return broker.MakeRequest(requestPath, request);
 }
