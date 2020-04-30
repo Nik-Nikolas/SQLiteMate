@@ -33,7 +33,7 @@ sqlite::utilities::SQLiteBroker::SQLiteBroker(const std::string &_dbPath) : m_db
     }
 }
 
-int sqlite::utilities::SQLiteBroker::Callback(void *_data, int _argc, char **_argv, char **_azColName) {
+int sqlite::utilities::SQLiteBroker::SelectCallback(void *_data, int _argc, char **_argv, char **_azColName) {
 
     // Default response file opening
     {
@@ -102,7 +102,7 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
     {
         char *errMsg{};
         const auto data = "Callback function called (SELECT ... query found).";
-        auto res = sqlite3_exec(db, query.c_str(), this->Callback, (void *)data, &errMsg);
+        auto res = sqlite3_exec(db, query.c_str(), this->SelectCallback, (void *) data, &errMsg);
 
         // Analyze the results and output the conclusion
         if (res != SQLITE_OK) {

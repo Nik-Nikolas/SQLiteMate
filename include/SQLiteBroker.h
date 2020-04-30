@@ -26,7 +26,7 @@ namespace sqlite::utilities {
          * @param _azColName an array of strings representing column names
          * @return 0 if successful, 1 otherwise
          */
-        static int Callback(void* _data, int _argc, char** _argv, char** _azColName);
+        static int SelectCallback(void *_data, int _argc, char **_argv, char **_azColName);
 
         /** Makes the SQL request
          *
