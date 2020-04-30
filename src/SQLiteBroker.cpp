@@ -40,7 +40,7 @@ int sqlite::utilities::SQLiteBroker::SelectCallback(void *_data, int _argc, char
         utils::ConsoleLogger::Log("message", (const char *) _data);
 
         std::string responseFile{};
-        auto resOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::responseFile);
+        const auto resOpt = sqlite::utilities::DefaultNamesConverter::ToString(sqlite::utilities::DefaultNames::responseFile);
         if(resOpt)
             responseFile = resOpt.value();
 
@@ -75,7 +75,7 @@ int sqlite::utilities::SQLiteBroker::MakeRequest(const std::string &_requestPath
     // Open database
     sqlite3 *db;
     {
-        auto res = sqlite3_open(m_dbPath.c_str(), &db);
+        const auto res = sqlite3_open(m_dbPath.c_str(), &db);
         if (res) {
             utils::ConsoleLogger::Log("error", "Can't open the database: " + std::string(sqlite3_errmsg(db)));
             return 1;
